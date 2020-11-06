@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  app:
+    build: .
+    restart: always
+    devices:
+      - /dev/ttyACM0:/dev/ttyACM0
+    environment:
+      PYTHONUNBUFFERED: 1
+
