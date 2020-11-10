@@ -1,3 +1,5 @@
+import os
+
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
@@ -79,8 +81,8 @@ class MyEventHandler(EventHandler):
     def on_sensor_update(self, msg: Message):
         print(msg)
         environment_ref.push({
-            'light': light,
-            'temperature': temperature,
+            'light': msg.light,
+            'temperature': msg.temperature,
             'timestamp': {
                 '.sv': 'timestamp',
             },
