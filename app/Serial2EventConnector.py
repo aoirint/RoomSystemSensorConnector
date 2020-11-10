@@ -26,6 +26,9 @@ class EventHandler:
     
     def on_sensor_update(self, msg: Message):
         pass
+    
+    def on_sensor_post(self, msg: Message):
+        pass
 
 
 @dataclass
@@ -86,10 +89,13 @@ class Serial2EventConnector:
             if handler is not None:
                 handler.on_wait_button_released(msg)
 
+        if handler is not None:
+            handler.on_sensor_update(msg)
+
         interval = datetime.timedelta(minutes=5)
         if prev_post is None or msg.timestamp - prev_post > interval:
             if handler is not None:
-                handler.on_sensor_update(msg)
+                handler.on_sensor_post(msg)
 
             self.prev_post = msg.timestamp
 
