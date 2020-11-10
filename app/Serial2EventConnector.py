@@ -15,7 +15,13 @@ class EventHandler:
     def on_now_button_pressed(self, msg: Message):
         pass
     
+    def on_now_button_released(self, msg: Message):
+        pass
+    
     def on_wait_button_pressed(self, msg: Message):
+        pass
+    
+    def on_wait_button_released(self, msg: Message):
         pass
     
     def on_sensor_update(self, msg: Message):
@@ -67,10 +73,18 @@ class Serial2EventConnector:
         if prev_msg.now_button_pressed and not msg.now_button_pressed:
             if handler is not None:
                 handler.on_now_button_pressed(msg)
+        
+        if not prev_msg.now_button_pressed and msg.now_button_pressed:
+            if handler is not None:
+                handler.on_now_button_released(msg)
 
         if prev_msg.wait_button_pressed and not msg.wait_button_pressed:
             if handler is not None:
                 handler.on_wait_button_pressed(msg)
+
+        if not prev_msg.wait_button_pressed and msg.wait_button_pressed:
+            if handler is not None:
+                handler.on_wait_button_released(msg)
 
         interval = datetime.timedelta(seconds=5)
         if prev_post is None or msg.timestamp - prev_post > interval:

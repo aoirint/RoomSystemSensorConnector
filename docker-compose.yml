@@ -5,6 +5,12 @@ services:
     restart: always
     devices:
       - /dev/ttyACM0:/dev/ttyACM0
+    volumes:
+      - ./credential.json:/credential.json:ro
     environment:
       PYTHONUNBUFFERED: 1
+      FIREBASE_SECRET_PATH: /credential.json
+      # FIREBASE_DATABASE_URL: https://YOUR_PROJECT_ID.firebaseio.com/
+    env_file:
+      - ./.env
 
