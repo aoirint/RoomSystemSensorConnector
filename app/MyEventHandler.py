@@ -16,10 +16,14 @@ FIREBASE_DATABASE_URL = os.environ['FIREBASE_DATABASE_URL']
 TEAMS_NOTIFICATION_URL = os.environ.get('TEAMS_NOTIFICATION_URL')
 TEAMS_BUTTON_URL = os.environ.get('TEAMS_BUTTON_URL')
 
-DOOR_MESSAGE_TITLE = os.environ.get('DOOR_MESSAGE_TITLE', 'DoorState Notification')
+SENSOR_MESSAGE_ENABLED = os.environ.get('SENSOR_MESSAGE_ENABLED', '0') == '1'
+SENSOR_MESSAGE_TITLE = os.environ.get('SENSOR_MESSAGE_TITLE')
+
+DOOR_MESSAGE_TITLE = os.environ.get('DOOR_MESSAGE_TITLE')
 DOOR_OPENED_MESSAGE_TEXT = os.environ.get('DOOR_OPENED_MESSAGE_TEXT', 'door opened')
 DOOR_CLOSED_MESSAGE_TEXT = os.environ.get('DOOR_CLOSED_MESSAGE_TEXT', 'door closed')
 
+BUTTON_MESSAGE_TITLE = os.environ.get('BUTTON_MESSAGE_TITLE')
 NOW_BUTTON_MESSAGE_TEXT = os.environ.get('NOW_BUTTON_MESSAGE_TEXT', 'now button pressed')
 WAIT_BUTTON_MESSAGE_TEXT = os.environ.get('WAIT_BUTTON_MESSAGE_TEXT', 'wait button pressed')
 
@@ -100,7 +104,7 @@ class MyEventHandler(EventHandler):
             },
         })
         
-        post_teams(TEAMS_BUTTON_URL, NOW_BUTTON_MESSAGE_TEXT)
+        post_teams(TEAMS_BUTTON_URL, NOW_BUTTON_MESSAGE_TEXT, title=BUTTON_MESSAGE_TITLE)
         
         play_sound('/sounds/now_button.mp3')
     
@@ -124,7 +128,7 @@ class MyEventHandler(EventHandler):
             },
         })
         
-        post_teams(TEAMS_BUTTON_URL, WAIT_BUTTON_MESSAGE_TEXT)
+        post_teams(TEAMS_BUTTON_URL, WAIT_BUTTON_MESSAGE_TEXT, title=BUTTON_MESSAGE_TITLE)
         
         play_sound('/sounds/wait_button.mp3')
  
@@ -141,4 +145,12 @@ class MyEventHandler(EventHandler):
                 '.sv': 'timestamp',
             },
         })
+
+        if SENSOR_MESSAGE_ENABLED:
+            text = ''
+            text += f'Brightness: {msg.light}\n\n'
+            text += f'Temperature: {msg.temperature}\n\n'
+            text += f'Timestamp: {msg.timestamp.isoformat()}\n\n'
+
+            post_teams(TEAMS_NOTIFICATION_URL, text, title=SENSOR_MESSAGE_TITLE)
 

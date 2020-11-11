@@ -92,7 +92,7 @@ class Serial2EventConnector:
         if handler is not None:
             handler.on_sensor_update(msg)
 
-        interval = datetime.timedelta(minutes=5)
+        interval = datetime.timedelta(minutes=30)
         if prev_post is None or msg.timestamp - prev_post > interval:
             if handler is not None:
                 handler.on_sensor_post(msg)
