@@ -1,4 +1,6 @@
 pyserial
 firebase_admin
+pytz
+
 mypy
 

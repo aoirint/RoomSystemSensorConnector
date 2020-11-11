@@ -2,6 +2,7 @@ import os
 import json
 import subprocess
 import requests
+import pytz
 
 import firebase_admin
 from firebase_admin import credentials
@@ -9,6 +10,8 @@ from firebase_admin import db
 
 from SerialClient import Message
 from Serial2EventConnector import Serial2EventConnector, EventHandler
+
+TIMEZONE = os.environ['TIMEZONE']
 
 FIREBASE_SECRET_PATH = os.environ['FIREBASE_SECRET_PATH']
 FIREBASE_DATABASE_URL = os.environ['FIREBASE_DATABASE_URL']
@@ -147,10 +150,11 @@ class MyEventHandler(EventHandler):
         })
 
         if SENSOR_MESSAGE_ENABLED:
+            timestamp_aware = pytz.timezone(TIMEZONE).localize(msg.timestamp)
             text = ''
             text += f'Brightness: {msg.light}\n\n'
             text += f'Temperature: {msg.temperature}\n\n'
-            text += f'Timestamp: {msg.timestamp.isoformat()}\n\n'
+            text += f'Timestamp: {timestamp_aware.isoformat()}\n\n'
 
             post_teams(TEAMS_NOTIFICATION_URL, text, title=SENSOR_MESSAGE_TITLE)
 

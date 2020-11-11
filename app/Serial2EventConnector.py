@@ -1,8 +1,11 @@
+import os
 import time
 import datetime
 from datetime import datetime as dt
 from dataclasses import dataclass
 from SerialClient import SerialClient, Message
+
+SENSOR_POST_INTERVAL = float(os.environ.get('SENSOR_POST_INTERVAL', 15))
 
 
 class EventHandler:
@@ -92,7 +95,7 @@ class Serial2EventConnector:
         if handler is not None:
             handler.on_sensor_update(msg)
 
-        interval = datetime.timedelta(minutes=30)
+        interval = datetime.timedelta(minutes=SENSOR_POST_INTERVAL)
         if prev_post is None or msg.timestamp - prev_post > interval:
             if handler is not None:
                 handler.on_sensor_post(msg)
