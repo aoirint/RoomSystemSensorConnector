@@ -150,11 +150,11 @@ class MyEventHandler(EventHandler):
         })
 
         if SENSOR_MESSAGE_ENABLED:
-            timestamp_aware = pytz.timezone(TIMEZONE).localize(msg.timestamp)
+            timestamp_local = pytz.timezone(TIMEZONE).normalize(msg.timestamp)
             text = ''
-            text += f'Brightness: {msg.light}\n\n'
-            text += f'Temperature: {msg.temperature}\n\n'
-            text += f'Timestamp: {timestamp_aware.isoformat()}\n\n'
+            text += f'明るさ: {msg.light}\n\n'
+            text += f'室温: {msg.temperature_celsius:.02f} ℃\n\n'
+            text += f'時刻: {timestamp_local.isoformat()}\n\n'
 
             post_teams(TEAMS_NOTIFICATION_URL, text, title=SENSOR_MESSAGE_TITLE)
 

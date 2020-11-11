@@ -3,6 +3,7 @@ import json
 import traceback
 import serial
 from datetime import datetime as dt
+import pytz
 from dataclasses import dataclass
 
 @dataclass
@@ -10,6 +11,7 @@ class Message:
     type: str
     light: int
     temperature: int
+    temperature_celsius: float
     now_button_pressed: bool
     wait_button_pressed: bool
     door_is_open: bool
@@ -38,7 +40,7 @@ class SerialClient:
     def read(self):
         while True:
             line = self.ser.readline()
-            timestamp = dt.now()
+            timestamp = dt.now(pytz.utc)
           
             try:
                 line = line.decode('ascii').strip()
@@ -56,6 +58,7 @@ class SerialClient:
                 type=serial_data.get('type'),
                 light=serial_data.get('light'),
                 temperature=serial_data.get('temperature'),
+                temperature_celsius=serial_data.get('temperatureCelsius'),
                 now_button_pressed=serial_data.get('nowButtonPressed'),
                 wait_button_pressed=serial_data.get('waitButtonPressed'),
                 door_is_open=serial_data.get('doorIsOpen'),
