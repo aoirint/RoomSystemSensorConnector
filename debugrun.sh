@@ -1,7 +1,7 @@
 #!/bin/bash
 
-docker-compose down
+./compose.sh down
 ./build.sh
-docker-compose up -d
-docker-compose logs -f
+./compose.sh up -d
+./compose.sh logs -f
 
