@@ -9,13 +9,13 @@
 PulseAudioを使うため、コンテナ作成時にホスト側ユーザのUID・GIDが必要です。
 これは、`docker-compose`コマンドの代わりに`./compose.sh`を使うことで`id`コマンドから自動設定されます。
 
-また、コンテナ作成時のユーザでPulseAudioデーモンが起動している必要があります。
+また、コンテナ作成時のユーザでPulseAudioプロセスが起動している必要があります。
 
 Raspberry Pi OS Liteなど、デスクトップ環境のないOSを使用している場合、デフォルトで
 PulseAudioがインストールされていないことが考えられます。
 `sudo apt install pulseaudio`などでインストールしておいてください。
 
-また、PulseAudioデーモンがOS起動時に起動しない場合があります。
+また、PulseAudioプロセスがOS起動時に起動しない場合があります。
 一般ユーザ権限でsystemdを使ってサービスを起動するには、
 `systemctl --user`を使いますが、これが実行できない（`Failed to connect to bus: No such file or directory`など）可能性があります。
 これは、`sudo loginctl enable-linger $USER`を実行して再起動することで解消する場合があります。
