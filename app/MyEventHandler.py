@@ -144,6 +144,7 @@ class MyEventHandler(EventHandler):
         environment_ref.push({
             'light': msg.light,
             'temperature': msg.temperature,
+            'temperatureCelsius': msg.temperature_celsius,
             'timestamp': {
                 '.sv': 'timestamp',
             },
