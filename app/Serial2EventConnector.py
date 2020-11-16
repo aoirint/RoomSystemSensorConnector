@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from SerialClient import SerialClient, Message
 
 SENSOR_POST_INTERVAL = float(os.environ.get('SENSOR_POST_INTERVAL', 15))
+DOOR_DETECTION_INTERVAL = float(os.environ.get('DOOR_DETECTION_INTERVAL', 1000))
 
 
 class EventHandler:
@@ -60,7 +61,7 @@ class Serial2EventConnector:
         if prev_msg is None:
             return
         
-        interval = datetime.timedelta(milliseconds=500)
+        interval = datetime.timedelta(milliseconds=DOOR_DETECTION_INTERVAL)
         if prev_door_event is None or msg.timestamp - prev_door_event > interval:
             if not local_door_is_open and msg.door_is_open:
                 self.prev_door_event = msg.timestamp
